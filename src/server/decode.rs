@@ -133,7 +133,7 @@ where
         let reader = Arc::new(Mutex::new(reader.take(len)));
         req.set_body(Body::from_reader(
             BufReader::new(ReadNotifier::new(reader.clone(), body_read_sender)),
-            Some(len as usize),
+            Some(len),
         ));
         Ok(Some((req, BodyReader::Fixed(reader))))
     } else {

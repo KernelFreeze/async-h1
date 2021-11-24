@@ -66,12 +66,12 @@ where
 
     let mut res = Response::new(StatusCode::try_from(code)?);
     for header in httparse_res.headers.iter() {
-        res.append_header(header.name, std::str::from_utf8(header.value)?);
+        res.append_header(header.name, std::str::from_utf8(header.value)?)?;
     }
 
     if res.header(DATE).is_none() {
         let date = fmt_http_date(std::time::SystemTime::now());
-        res.insert_header(DATE, &format!("date: {}\r\n", date)[..]);
+        res.insert_header(DATE, &format!("date: {}\r\n", date)[..])?;
     }
 
     let content_length = res.header(CONTENT_LENGTH);
@@ -95,8 +95,8 @@ where
 
     // Check for Content-Length.
     if let Some(len) = content_length {
-        let len = len.last().as_str().parse::<usize>()?;
-        res.set_body(Body::from_reader(reader.take(len as u64), Some(len)));
+        let len = len.last().as_str().parse::<u64>()?;
+        res.set_body(Body::from_reader(reader.take(len), Some(len)));
     }
 
     // Return the response.
