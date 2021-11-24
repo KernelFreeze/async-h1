@@ -12,7 +12,7 @@ pub use encode::Encoder;
 /// Opens an HTTP/1.1 connection to a remote host.
 pub async fn connect<RW>(mut stream: RW, req: Request) -> http_types::Result<Response>
 where
-    RW: Read + Write + Send + Sync + Unpin + 'static,
+    RW: Read + Write + Unpin + 'static,
 {
     let mut req = Encoder::new(req);
     log::trace!("> {:?}", &req);
