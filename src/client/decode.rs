@@ -18,7 +18,7 @@ const LF: u8 = b'\n';
 /// Decode an HTTP response on the client.
 pub async fn decode<R>(reader: R) -> http_types::Result<Response>
 where
-    R: Read + Unpin + Send + Sync + 'static,
+    R: Read + Unpin + 'static,
 {
     let mut reader = BufReader::new(reader);
     let mut buf = Vec::new();
